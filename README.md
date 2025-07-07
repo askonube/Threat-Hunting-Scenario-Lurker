@@ -1,14 +1,5 @@
 # Threat-Hunting-Scenario-Lurker
 
-## Scenario
-
-
-Before you officially begin the flags, you must first determine where to start hunting. Identify where to start hunting with the following intel given: 
-1. Days active 2-3 days
-2. Executions from Temp folder
-3. 15th of June
-
-
 ## Overview
 
 A critical responsibility of any security team is to ensure the complete elimination of threats within a network. Detecting, analyzing, isolating, eradicating, and recovering are the common steps involved in a threat hunting or incident response investigation. It is important to follow the NIST 800-61 Incident Response Life Cycle, as well as the organisation's internal playbook, when dealing with such issues. However, things are often overlooked, and hidden artefacts can emerge later. Being thorough is crucial for establishing a strong security posture, especially as threat actors continually find new and sophisticated ways to maintain persistence. This investigation presents the findings from a scenario in which a threat actor was not completely eliminated as initially thought, along with recommended steps to fully eradicate any artefacts left behind in the network.
