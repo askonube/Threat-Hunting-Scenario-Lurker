@@ -57,5 +57,43 @@ The malicious PowerShell command is executed in the `Temp` folder, just as the i
 <img width="1064" alt="Screenshot 2025-07-09 175326" src="https://github.com/user-attachments/assets/b7ad7c00-8899-4b59-a8c5-e03bb5df3930" />
 
 
+Prior to the command execution in the `Temp` folder, the telemetry from the user `michaelvm` returned authorised and expected logs that didn't trigger any alerts. It was still unknown when or how the threat actor gained initial access. The team hypothesised that the threat actor surreptitiously executed the malicious PowerShell command during periods of the baseline telemetry sent from `michaelvm`. The `DeviceProcessEvents` schema was used to explore further on all of the PowerShell processes that were not picked up in the `DeviceEvents` schema. This spanned from `2025-06-15T07:02:17.8259072Z` til `2025-06-16T07:53:20.663666Z`, when the command was executed in the `Temp` folder. 
+
+```kql
+let EndTime = datetime(2025-06-16T07:53:20.663666Z);
+DeviceProcessEvents
+| where DeviceName == "michaelvm"
+| where Timestamp >= EndTime - 3h and Timestamp <= EndTime
+| where FileName == "powershell.exe"
+| where ProcessCommandLine contains ".ps1"
+| project Timestamp, DeviceName, FileName, ActionType, ProcessCommandLine, InitiatingProcessCommandLine
+| order by Timestamp desc
+```
+
+
+<img width="1094" alt="Screenshot 2025-07-09 185055" src="https://github.com/user-attachments/assets/518d30ba-8463-4fe2-8144-50f4803c9298" />
+
+
+The yellow boxes represent `michaelvm`'s normal, baseline telemetry, while the red boxes highlight the unauthorised commands that were executed by the threat actor. The `InitiatingProcessCommandLine` was only a `powershell.exe` contrary to the rest of the logs provided. Upon further inspection, it was found that the threat actor ran the command `"powershell.exe" -ExecutionPolicy Bypass -File "C:\Users\Mich34L_id\CorporateSim\Investments\Crypto\wallet_gen_0.ps1"` along with four additional iterations ending in consecutive numbers:
+1. `wallet_gen_1.ps1`
+2. `wallet_gen_2.ps1`
+3. `wallet_gen_3.ps1`
+4. `wallet_gen_4.ps1`
+
+The presence of the folder path `Crypto` within these commands is a strong indication that the threat actor infiltrated the user `michaelvm`'s device at `2025-06-16T05:38:07.9685093Z.`
+
+
+<img width="1066" alt="Screenshot 2025-07-09 185649" src="https://github.com/user-attachments/assets/10d3901f-cd9d-42a1-afec-ad3cf25d966f" />
+
+
+
+
+
+
+
+
+
+
+
 ---
 
