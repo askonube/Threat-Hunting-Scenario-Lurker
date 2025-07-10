@@ -64,7 +64,7 @@ Prior to the command execution in the `Temp` folder, the telemetry from the user
 let EndTime = datetime(2025-06-16T07:53:20.663666Z);
 DeviceProcessEvents
 | where DeviceName == "michaelvm"
-| where Timestamp >= EndTime - 3h and Timestamp <= EndTime
+| where Timestamp >= datetime(2025-06-15 07:00:00) and Timestamp <= EndTime
 | where FileName == "powershell.exe"
 | where ProcessCommandLine contains ".ps1"
 | project Timestamp, DeviceName, FileName, ActionType, ProcessCommandLine, InitiatingProcessCommandLine
