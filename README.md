@@ -25,25 +25,37 @@ Gather relevant data from logs, network traffic, and endpoints.
 Ensure the relevant tables contain recent logs:
 
 ```kql
+- DeviceEvents
 - DeviceProcessEvents
 - DeviceFileEvents
 ```
 
 #### Initial Findings:
 
+At the start of the investigation, the security team received intel that may have indicated when the threat attacker triggered the alerts on Microsoft Defender for Endpoint.
 
+1. Days active 2-3 days
+2. Executions from Temp folder
+3. 15th of June
 
-
-
+Based on these parameters, the security team created a KQL query to identify commands executed from the `Temp` folder between June 15th and June 18th by the threat actor. It was important to avoid indexing the schema `DeviceProcessEvents` as this would have returned all PowerShell script executions and process launches over the course of 3 days, which would have generated too many logs. It was much more logical to use `DeviceEvents` instead as specific high-level ActionType events such as `PowerShellCommand`, which would return more filtered events. 
 
 ```kql
-DeviceProcessEvents
-| where TimeGenerated >= datetime(2025-06-15 00:00:00) and TimeGenerated < datetime(2025-06-16 00:00:00)
-| where ProcessCommandLine has @"\AppData\Local\Temp\" and InitiatingProcessCommandLine has @"\AppData\Local\Temp\"
-| where AccountName != "local service"
-| order by TimeGenerated desc
+DeviceEvents
+| where Timestamp >= datetime(2025-06-15 07:00:00) and Timestamp < datetime(2025-06-18 07:00:00)
+| where ActionType has_any ("PowerShellCommand")
+| where InitiatingProcessCommandLine has "Temp"
+| project Timestamp, DeviceName, ActionType, InitiatingProcessFileName, InitiatingProcessCommandLine
+| order by Timestamp asc
+
 ```
-<img width="1403" alt="Screenshot 2025-07-06 175953" src="https://github.com/user-attachments/assets/0293afb8-1797-4f9a-9d20-4af343a835d9" />
+![image](https://github.com/user-attachments/assets/e2a5b358-c3af-4046-9161-ab2912aafc79)
+
+
+The malicious PowerShell command is executed in the `Temp` folder, just as the intel suggested. 
+
+<img width="1064" alt="Screenshot 2025-07-09 175326" src="https://github.com/user-attachments/assets/b7ad7c00-8899-4b59-a8c5-e03bb5df3930" />
+
 
 ---
 
