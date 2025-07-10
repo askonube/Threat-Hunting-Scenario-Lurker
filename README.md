@@ -14,7 +14,7 @@ The security team initially reported that they had eliminated an outside threat 
 
 ### Hypothesis:
 
-The organisation is currently on high alert. It is reasonable to suspect that the threat actor has gained initial access while leaving very few traces. The investigation should focus on directories or folders that may contain backdoors or serve as nexus points for lateral movement within the network, as well as other common persistence mechanisms such as registry keys, scheduled tasks, and unauthorized user accounts.
+The organisation is currently on high alert. It is reasonable to suspect that the threat actor has gained initial access while leaving very few traces. The investigation should focus on directories or folders that may contain backdoors or serve as nexus points for lateral movement within the network, as well as other common persistence mechanisms such as registry keys, scheduled tasks, and unauthorised user accounts.
 
 
 ## 2. Data Collection
