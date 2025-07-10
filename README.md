@@ -86,11 +86,12 @@ The presence of the folder path `Crypto` within these commands is a strong indic
 <img width="1066" alt="Screenshot 2025-07-09 185649" src="https://github.com/user-attachments/assets/10d3901f-cd9d-42a1-afec-ad3cf25d966f" />
 
 
+Threat actors will perform local reconnaissance to confirm they have successfully gained initial access. Commands such as `whoami`, `ipconfig`, and `systeminfo` will return detailed information about the internal environment that will ultimately facilitate the attacker's objectives. The security team checked `DeviceProcessEvents` and scanned for any reconnaissance activity occuring before `2025-06-16T07:53:20.663666Z`. 
+
+<img width="1000" alt="Screenshot 2025-07-09 195459" src="https://github.com/user-attachments/assets/63a6b6d2-f252-4aca-b1bb-b2bad6569aec" />
 
 
-
-
-
+The attacker runs the `whoami` command at `2025-06-16T05:56:58.3597286Z`, 18 minutes after it had initially infiltrated the user `michaelvm`. This aligns with known techniques where threat actors try to remain undetected as long as possible after the initial compromise, trying to blend in with normal traffic or user behaviour. During this time, attackers may enumerate directories, check for security tools, or observe system processes to gather more information. 
 
 
 
