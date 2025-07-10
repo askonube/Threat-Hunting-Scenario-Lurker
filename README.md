@@ -91,7 +91,7 @@ Threat actors will perform local reconnaissance to confirm they have successfull
 <img width="1000" alt="Screenshot 2025-07-09 195459" src="https://github.com/user-attachments/assets/63a6b6d2-f252-4aca-b1bb-b2bad6569aec" />
 
 
-The attacker runs the `whoami` command at `2025-06-16T05:56:58.3597286Z`, 18 minutes after it had initially infiltrated the user `michaelvm`. This aligns with known techniques where threat actors try to remain undetected as long as possible after the initial compromise, trying to blend in with normal traffic or user behaviour. During this time, attackers may enumerate directories, check for security tools, or observe system processes to gather more information. 
+The attacker runs the `whoami` command at `2025-06-16T05:56:58.3597286Z`, 18 minutes after it had initially infiltrated the user `michaelvm` at `2025-06-16T05:38:07.9685093Z`. This aligns with known techniques where threat actors try to remain undetected as long as possible after the initial compromise, trying to blend in with normal traffic or user behaviour. During this time, attackers may enumerate directories, check for security tools, or observe system processes to gather more information. 
 
 
 
