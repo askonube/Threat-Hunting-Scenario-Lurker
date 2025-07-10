@@ -1,4 +1,4 @@
-# Threat-Hunting-Scenario-Lurker
+# Threat Hunting Scenario Lurker
 
 ## Overview
 
