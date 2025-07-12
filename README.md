@@ -95,6 +95,31 @@ Threat actors will perform local reconnaissance to confirm they have successfull
 The attacker runs the `whoami` command at `2025-06-16T05:56:58.3597286Z`, 18 minutes after it had initially infiltrated the user `michaelvm` at `2025-06-16T05:38:07.9685093Z`. This aligns with known techniques where threat actors try to remain undetected as long as possible after the initial compromise, trying to blend in with normal traffic or user behaviour. During this time, attackers may enumerate directories, check for security tools, or observe system processes to gather more information. 
 
 
+After gaining establishing initial access, threat actors will start to scour the network, looking for any important files or data that they can exfiltrate or encrypt. Numerous logs returned information regarding cryptocurrency holdings. Focusing on the term `crypto` returned these results.
+
+
+```kql
+DeviceFileEvents
+| where DeviceName == "michaelvm"
+| where FileName == "crypto"
+| where Timestamp >= datetime(2025-06-16T05:38:07.9685093Z) and Timestamp <= datetime(2025-06-16T07:53:20.663666Z)
+| project Timestamp, DeviceName, ActionType, FileName, FolderPath, InitiatingProcessCommandLine 
+| order by Timestamp asc
+```
+
+<img width="1066" height="446" alt="Screenshot 2025-07-11 165349" src="https://github.com/user-attachments/assets/c6e1f572-25fc-4bdb-9cc9-34153d88a4c0" />
+
+It is very likely that the threat actor was interested in the file `QuarterlyCryptoHoldings.docx` at as this would contain relevant information regarding any significant information regarding cryptocurrency ownership. Due to the importance of this document, it is safe to assume that the threat actor decided to exfiltrate this specific document. 
+
+```kql
+DeviceEvents
+| where DeviceName == "michaelvm"
+| where FileName contains 'QuarterlyCryptoHolding'
+| where Timestamp >= datetime(2025-06-16T05:38:07.9685093Z) and Timestamp <= datetime(2025-06-16T07:53:20.663666Z)
+//| project Timestamp, DeviceName, ActionType, FileName, FolderPath, InitiatingProcessCommandLine 
+| order by Timestamp desc
+``` 
+<img width="1229" height="433" alt="Screenshot 2025-07-11 172923" src="https://github.com/user-attachments/assets/63dd577c-7b71-42b7-8644-ae4756b5dd7d" />
 
 
 ---
