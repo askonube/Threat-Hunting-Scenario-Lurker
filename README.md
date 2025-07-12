@@ -121,6 +121,28 @@ DeviceEvents
 ``` 
 <img width="1229" height="433" alt="Screenshot 2025-07-11 172923" src="https://github.com/user-attachments/assets/63dd577c-7b71-42b7-8644-ae4756b5dd7d" />
 
+One method of managing file transfers is by using Windows' native command-line tool, `bitsadmin.exe`. Files are transferred via the Background Intelligent Transfer Service (BITS), which is often abused by threat actors as a Living off the Land Binary (LOLBIN) to stealthily download or upload files, frequently bypassing traditional security controls because it is a trusted, native tool. This technique is commonly a precursor to data exfiltration or establishing persistence, as BITS jobs can be scripted to continue even after a user logs out or the system reboots.
+
+
+```kql
+DeviceProcessEvents
+| where DeviceName == "michaelvm"
+| where FileName contains "bitsadmin.exe"
+| project Timestamp, DeviceName, FileName, ProcessCommandLine
+``` 
+
+<img width="1309" height="395" alt="Screenshot 2025-07-11 213256" src="https://github.com/user-attachments/assets/f9c52c39-c8b2-4025-9b9f-0fc1d3b4be9d" />
+
+Before a threat actor launches an attack, they will often drop malicious payloads onto a host prior to execution. This process is known as staging, which frequently takes place in Temp folders or uncommon directories. Threat actors often name these payloads to resemble legitimate software in order to avoid detection. Returning to the crypto theme of this investigation, it is reasonable to assume that any file related to finance could be targeted, which can be seen below with the file `ledger_viewer.exe` at `2025-06-16T06:15:37.0446648Z`.
+
+```kql
+DeviceFileEvents
+| where DeviceName == "michaelvm"
+| where Timestamp >= datetime(2025-06-16T05:38:07.9685093Z) and Timestamp <= datetime(2025-06-16T07:53:20.663666Z)
+| where FolderPath contains "temp"
+| project Timestamp, ActionType, FileName, FolderPath, InitiatingProcessCommandLine
+``` 
+<img width="1123" height="512" alt="Screenshot 2025-07-11 221443" src="https://github.com/user-attachments/assets/97cffbf6-db3a-4972-a09c-01631c0e1498" />
 
 ---
 
