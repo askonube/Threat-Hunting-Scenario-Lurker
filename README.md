@@ -144,5 +144,27 @@ DeviceFileEvents
 ``` 
 <img width="1123" height="512" alt="Screenshot 2025-07-11 221443" src="https://github.com/user-attachments/assets/97cffbf6-db3a-4972-a09c-01631c0e1498" />
 
+
+A common technique used by attackers is executing a malicious HTML Application (HTA) script via a trusted Windows binary. Native Windows utilities such as `mshta.exe` are designed to execute HTA files, which are standalone applications written in HTML and scripting languages such as JavaScript or VBScript. Attackers may drop an HTA file in a Temp folder to stage an attack, then execute it with `mshta.exe`. This can be triggered by the user double-clicking the file or by running it from the command line. Since `mshta.exe` is signed by Microsoft and rarely blocked, detection is extremely difficult. Furthermore, because it runs outside the browser, it bypasses browser-based security restrictions. Attackers can easily phish users into executing malicious HTA files by giving them innocuous, legitimate-looking names. In this case, the threat actor named the HTA file `client_update.hta` and, with PowerShell as the parent process, executed the HTA file in the Temp folder using the command `"mshta.exe" C:\Users\MICH34~1\AppData\Local\Temp\client_update.hta` at `2025-06-16T06:17:27.0378198Z`.
+
+
+```kql
+DeviceProcessEvents
+| where DeviceName == "michaelvm"
+| where Timestamp >= datetime(2025-06-16T05:38:07.9685093Z) and Timestamp <= datetime(2025-06-16T07:53:20.663666Z)
+| where FileName == "mshta.exe"
+| project Timestamp, ActionType, FileName, FolderPath, ProcessCommandLine, InitiatingProcessCommandLine
+``` 
+
+<img width="2581" height="838" alt="image" src="https://github.com/user-attachments/assets/3ece8cc9-f525-439f-a75f-d78fc5ff2796" />
+
+
+
+
+
 ---
+
+
+
+
 
