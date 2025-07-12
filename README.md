@@ -159,6 +159,24 @@ DeviceProcessEvents
 <img width="2581" height="838" alt="image" src="https://github.com/user-attachments/assets/3ece8cc9-f525-439f-a75f-d78fc5ff2796" />
 
 
+Alternate Data Streams: 
+
+```kql
+DeviceProcessEvents
+| where DeviceName == "michaelvm"
+| where Timestamp >= datetime(2025-06-16T05:38:07.9685093Z) and Timestamp <= datetime(2025-06-16T07:53:20.663666Z)
+| project Timestamp, ActionType, FileName, FolderPath, InitiatingProcessCommandLine, SHA1
+``` 
+
+
+<img width="1326" height="505" alt="Screenshot 2025-07-11 233322" src="https://github.com/user-attachments/assets/11d2cfa4-c7ff-4a85-9037-55c8a5313e78" />
+
+
+
+
+Persistence achieved through autorun script
+
+<img width="2515" height="664" alt="image" src="https://github.com/user-attachments/assets/82bd64c5-216b-4feb-955e-9392e2691276" />
 
 
 
