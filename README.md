@@ -109,7 +109,7 @@ DeviceFileEvents
 
 <img width="1066" height="446" alt="Screenshot 2025-07-11 165349" src="https://github.com/user-attachments/assets/c6e1f572-25fc-4bdb-9cc9-34153d88a4c0" />
 
-It is very likely that the threat actor was interested in the file `QuarterlyCryptoHoldings.docx` at as this would contain relevant information regarding any significant information regarding cryptocurrency ownership. Due to the importance of this document, it is safe to assume that the threat actor decided to exfiltrate this specific document. 
+It is very likely that the threat actor was interested in the file `QuarterlyCryptoHoldings.docx`, as it would contain significant information regarding cryptocurrency ownership. Due to the importance of this document, it is reasonable to assume that the threat actor decided to exfiltrate it. Before exfiltration, the threat actor would typically access the file one last time, which aligns with the timeline shown in the logs below.
 
 ```kql
 DeviceEvents
