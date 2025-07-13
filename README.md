@@ -180,6 +180,89 @@ Persistence achieved through autorun script
 
 
 
+Scheduled Task
+
+<img width="1367" height="335" alt="Screenshot 2025-07-12 141751" src="https://github.com/user-attachments/assets/06da3d82-0b5d-4831-89e3-84bb65826795" />
+
+
+
+Moving laterally
+
+Attackers often use these commands to move laterally—that is, to pivot from one compromised system to another within a network. By searching for these in process command lines, you can spot attempts to access or control other machines, which is a key sign of an expanding attack.
+
+Common Lateral Movement Commands
+1. \\
+
+    What it is: Double backslash, denotes a UNC (Universal Naming Convention) path.
+
+    Example: \\REMOTEPC\C$\Windows\Temp
+
+    Use: Accessing files or shares on a remote machine.
+
+2. psexec
+
+    What it is: A Sysinternals tool for executing processes on remote systems.
+
+    Example: psexec \\REMOTEPC cmd.exe
+
+    Use: Running commands or launching shells on remote computers.
+
+3. wmic
+
+    What it is: Windows Management Instrumentation Command-line tool.
+
+    Example: wmic /node:REMOTEPC process call create "cmd.exe"
+
+    Use: Managing and executing processes on remote machines.
+
+4. mstsc
+
+    What it is: Microsoft Terminal Services Client (Remote Desktop).
+
+    Example: mstsc /v:REMOTEPC
+
+    Use: Connecting to another computer via Remote Desktop Protocol (RDP).
+
+5. Enter-PSSession
+
+    What it is: PowerShell cmdlet for starting an interactive session with a remote computer.
+
+    Example: Enter-PSSession -ComputerName REMOTEPC
+
+    Use: Remotely controlling another computer via PowerShell.
+
+
+```kql DeviceEvents
+| where DeviceName == "michaelvm"
+| where ProcessCommandLine contains "psexec"
+    or ProcessCommandLine contains "wmic"
+    or ProcessCommandLine contains "mstsc"
+    or ProcessCommandLine contains "Enter-PSSession"
+| where Timestamp >= datetime(2025-06-16T07:53:20.663666Z)
+| project Timestamp, ProcessCommandLine
+| order by Timestamp asc
+```
+
+<img width="1139" height="629" alt="Screenshot 2025-07-12 145236" src="https://github.com/user-attachments/assets/1d0ae602-cbcf-449f-b5d6-e8e5849bed35" />
+
+
+
+Pinpoint the exact time of lateral move to the second system.
+
+```kql
+DeviceProcessEvents
+| where ProcessCommandLine contains "centralsrvr" and ProcessCommandLine contains "psexec"    
+| project Timestamp, DeviceName, InitiatingProcessAccountName, ProcessCommandLine
+| order by Timestamp asc
+```
+
+<img width="1328" height="502" alt="Screenshot 2025-07-12 154706" src="https://github.com/user-attachments/assets/edf3ea0c-6f28-4a3d-a7b9-9a58692d1417" />
+
+
+Document that the threat actor was after
+
+
+
 ---
 
 
