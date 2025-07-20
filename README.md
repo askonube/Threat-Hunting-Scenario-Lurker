@@ -186,10 +186,6 @@ Scheduled Task
 
 
 
-Moving laterally
-
-Attackers often use these commands to move laterally—that is, to pivot from one compromised system to another within a network. By searching for these in process command lines, you can spot attempts to access or control other machines, which is a key sign of an expanding attack.
-
 Common Lateral Movement Commands
 1. \\
 
@@ -246,9 +242,6 @@ Common Lateral Movement Commands
 <img width="1139" height="629" alt="Screenshot 2025-07-12 145236" src="https://github.com/user-attachments/assets/1d0ae602-cbcf-449f-b5d6-e8e5849bed35" />
 
 
-
-Pinpoint the exact time of lateral move to the second system.
-
 ```kql
 DeviceProcessEvents
 | where ProcessCommandLine contains "centralsrvr" and ProcessCommandLine contains "psexec"    
@@ -259,7 +252,6 @@ DeviceProcessEvents
 <img width="1328" height="502" alt="Screenshot 2025-07-12 154706" src="https://github.com/user-attachments/assets/edf3ea0c-6f28-4a3d-a7b9-9a58692d1417" />
 
 
-Document that the threat actor was after
 
 
 
